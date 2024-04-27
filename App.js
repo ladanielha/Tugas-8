@@ -1,20 +1,21 @@
+import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+
+import { useGuard, useLoading, useToken } from './latte/hooks';
+import { AppContext } from './latte/context';
+import { AppRouter } from './src/routers';
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+  const {isAuthenticated, setIsAuthenticated} = useGuard();
+  const loading = useLoading();
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  return (
+    <>
+      <StatusBar backgroundColor={'transparent'} translucent/>
+      <AppContext.Provider value={{isAuthenticated, setIsAuthenticated, loading}}>
+        <AppRouter />      
+      </AppContext.Provider>
+    </>
+  )
+
+}
